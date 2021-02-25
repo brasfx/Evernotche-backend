@@ -1,9 +1,10 @@
 import express from 'express';
 import controller from '../controllers/registerController.js';
+import cors from 'cors';
 
 const app = express();
 
-app.post('/new-register', controller.create);
+app.post('/new-register', cors(), controller.create);
 app.get('/register', controller.findAll);
 app.post('/login', controller.findOne);
 app.post('/support', controller.support);

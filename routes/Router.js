@@ -6,8 +6,8 @@ import cors from 'cors';
 const app = express();
 
 //Registro
-app.post('/new-register', registerController.create);
-app.get('/register', cors(), registerController.findAll);
+app.post('/new-register', cors(), registerController.create);
+app.get('/register', registerController.findAll);
 app.post('/login', registerController.findOne);
 app.post('/support', registerController.support);
 app.delete('/register/:id', registerController.remove);
