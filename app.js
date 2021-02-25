@@ -31,10 +31,10 @@ var corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 //define o dominio de origem para consumo do servico
-app.use(bodyParser.json(corsOptions));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(Router);
