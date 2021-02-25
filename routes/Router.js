@@ -8,7 +8,7 @@ const app = express();
 app.post('/new-register', registerController.create);
 app.get('/register', registerController.findAll);
 app.post('/login', registerController.findOne);
-app.post('/register', registerController.support);
+app.post('/support', registerController.support);
 app.delete('/register/:id', registerController.remove);
 app.put('/register/:id', registerController.update);
 app.put('/recover-password', registerController.recoverPassword);
