@@ -22,7 +22,7 @@ const create = async (req, res) => {
     </ul>
     `;
 
-  let transporter = nodemailer.createTransport({
+  let transporter = await nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
 
@@ -44,7 +44,7 @@ const create = async (req, res) => {
     text: 'Hello world?',
     html: message,
   };
-  transporter.sendMail(mailOptions, (error, info) => {
+  await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       return res.render(error);
     }
