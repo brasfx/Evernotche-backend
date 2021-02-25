@@ -28,6 +28,8 @@ const app = express();
 
 var corsOptions = {
   origin: process.env.FRONT_ORIGIN,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
   optionsSuccessStatus: 200,
 };
 
