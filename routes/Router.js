@@ -1,12 +1,13 @@
 import express from 'express';
 import registerController from '../controllers/registerController.js';
 import noteController from '../controllers/noteController.js';
+import cors from 'cors';
 
 const app = express();
 
 //Registro
 app.post('/new-register', registerController.create);
-app.get('/register', registerController.findAll);
+app.get('/register', cors(), registerController.findAll);
 app.post('/login', registerController.findOne);
 app.post('/support', registerController.support);
 app.delete('/register/:id', registerController.remove);
