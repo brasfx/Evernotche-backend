@@ -28,7 +28,7 @@ const create = async (req, res) => {
     </ul>
     `;
 
-    let transporter = nodemailer.createTransport({
+    let transporter = await nodemailer.createTransport({
       service: 'gmail',
       host: 'smtp.gmail.com',
 
@@ -50,12 +50,12 @@ const create = async (req, res) => {
       text: 'Hello world?',
       html: message,
     };
-    transporter.sendMail(mailOptions, (error, info) => {
+    await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return console.log(error);
+        return res.render(error);
       }
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      res.render('Message sent: %s', info.messageId);
+      res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
       res.render('contact', { message: 'Email enviado com sucesso!' });
     });
   } catch (error) {
