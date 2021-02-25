@@ -26,20 +26,12 @@ import { db } from './models/index.js';
 
 const app = express();
 
-var corsOptions = {
-  origin: process.env.FRONT_ORIGIN,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 200,
-};
+// var corsOptions = {
+//   origin: process.env.FRONT_ORIGIN,
+//   optionsSuccessStatus: 200,
+// };
 
-app.use(cors(corsOptions), function (req, res, next) {
-  res.json({ msg: 'This is CORS-enabled for only example.com.' });
-});
-
-app.listen(80, function () {
-  console.log('CORS-enabled web server listening on port 80');
-});
+app.use(cors());
 
 //define o dominio de origem para consumo do servico
 app.use(bodyParser.json());
