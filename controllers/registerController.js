@@ -12,13 +12,7 @@ const Model = db.register;
 const create = async (req, res) => {
   const { name, email, password, country } = req.body;
 
-  try {
-    const register = new Model({ name, email, password, country });
-    const data = await register.save(register);
-    res.send(data);
-    logger.info(`POST /register - ${JSON.stringify(register)}`);
-
-    let message = `
+  let message = `
     <h3>Obrigado por nos escolher</h3>
     <h3>Seus dados do Evernotche Web</h3>
     <ul>
@@ -28,36 +22,42 @@ const create = async (req, res) => {
     </ul>
     `;
 
-    let transporter = await nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
 
-      auth: {
-        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-        pass: `${process.env.EMAIL_PASSWORD}`,
-        port: 587,
-        secure: true,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+    auth: {
+      user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+      pass: `${process.env.EMAIL_PASSWORD}`,
+      port: 587,
+      secure: true,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
 
-    let mailOptions = {
-      from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
-      to: `${email}`, // list of receivers
-      subject: 'Confirmação criação de conta ',
-      text: 'Hello world?',
-      html: message,
-    };
-    await transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.render(error);
-      }
-      res.render('Message sent: %s', info.messageId);
-      res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.render('contact', { message: 'Email enviado com sucesso!' });
-    });
+  let mailOptions = {
+    from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
+    to: `${email}`, // list of receivers
+    subject: 'Confirmação criação de conta ',
+    text: 'Hello world?',
+    html: message,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.render(error);
+    }
+    res.render('Message sent: %s', info.messageId);
+    res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    res.render('contact', { message: 'Email enviado com sucesso!' });
+  });
+
+  try {
+    const register = new Model({ name, email, password, country });
+    const data = await register.save(register);
+    res.send(data);
+    logger.info(`POST /register - ${JSON.stringify(register)}`);
   } catch (error) {
     res
       .status(500)
