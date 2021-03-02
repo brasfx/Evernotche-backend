@@ -31,7 +31,26 @@ const app = express();
 //   optionsSuccessStatus: 200,
 // };
 
-app.use('https://evernotche.vercel.app', cors());
+function handleCors(req, res, callback) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE,OPTIONS'
+  );
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+
+  // CORS OPTIONS request, simply return 200
+  if (req.method == 'OPTIONS') {
+    res.statusCode = 200;
+    res.end();
+    callback.onOptions();
+    return;
+  }
+}
+
+callback.onContinue();
+
+app.use(cors(handleCors()));
 app.use(express.json());
 
 //define o dominio de origem para consumo do servico
