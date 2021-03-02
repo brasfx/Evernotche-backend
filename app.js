@@ -46,6 +46,7 @@ function handleCors(req, res, callback) {
     callback.onOptions();
     return;
   }
+  callback.onContinue();
 }
 
 app.use(cors(handleCors()));
