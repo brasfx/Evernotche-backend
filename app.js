@@ -31,7 +31,8 @@ const app = express();
 //   optionsSuccessStatus: 200,
 // };
 
-app.use('*', cors());
+app.use(cors());
+app.use(express.json());
 
 //define o dominio de origem para consumo do servico
 app.use(bodyParser.json());
