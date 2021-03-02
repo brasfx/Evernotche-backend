@@ -48,8 +48,6 @@ function handleCors(req, res, callback) {
   }
 }
 
-callback.onContinue();
-
 app.use(cors(handleCors()));
 app.use(express.json());
 
