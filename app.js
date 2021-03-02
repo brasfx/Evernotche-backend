@@ -31,7 +31,7 @@ const app = express();
 //   optionsSuccessStatus: 200,
 // };
 
-app.use('*', cors());
+app.use('https://evernotche.vercel.app', cors());
 app.use(express.json());
 
 //define o dominio de origem para consumo do servico
