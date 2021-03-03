@@ -17,7 +17,7 @@ const create = async (req, res) => {
     logger.error(`POST /note - ${JSON.stringify(error.message)}`);
   }
 };
-// Puxa Nota Pelo ID
+// Puxa Nota Pelo ID do usuário
 const findNote = async (req, res) => {
   logger.info(` body: ${req.body}`);
 
