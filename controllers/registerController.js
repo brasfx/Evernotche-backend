@@ -107,7 +107,7 @@ const update = async (req, res) => {
     });
   }
 
-  const id = req.params.id;
+  const id = req.body;
 
   try {
     const data = await Model.updateOne({ _id: id }, req.body);
