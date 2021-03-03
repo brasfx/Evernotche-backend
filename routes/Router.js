@@ -10,7 +10,7 @@ app.get('/register', registerController.findAll);
 app.post('/login', registerController.findOne);
 app.post('/support', registerController.support);
 app.delete('/register/:id', registerController.remove);
-app.put('/register/:id', registerController.update);
+app.put('/register', registerController.update);
 app.put('/recover-password', registerController.recoverPassword);
 
 //Nota
