@@ -67,13 +67,8 @@ const findAll = async (_, res) => {
 };
 
 
-//Nota é atualiada a partir de seu ID
+//Nota é atualiada a partir de seu ID  para o lixo
 const trash = async (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({
-      message: 'Dados para atualizacao vazio',
-    });
-  }
 
   const noteid = req.params.noteid;
 
@@ -89,7 +84,24 @@ const trash = async (req, res) => {
     logger.error(`PUT /note - ${JSON.stringify(error.message)}`);
   }
 };
-//Nota é atualiada a partir de seu ID para o lixo
+
+const recover = async (req, res) => {
+
+  const noteid = req.params.noteid;
+
+  try {
+    const data = await Model.updateOne({ _id: noteid }, {$set: { trash: 0}});
+    res.send({ message: 'Nota recuperada do Lixo' });
+
+    logger.info(`PUT /note - ${noteid} - ${JSON.stringify(req.body)}`);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Erro ao recuperar nota do lixo, nota de id: ' + noteid,
+    });
+    logger.error(`PUT /note - ${JSON.stringify(error.message)}`);
+  }
+};
+//Nota é atualiada a partir de seu ID
 const update = async (req, res) => {
   if (!req.body) {
     return res.status(400).send({
@@ -130,4 +142,4 @@ const remove = async (req, res) => {
     logger.error(`DELETE / note - ${JSON.stringify(error.message)}`);
   }
 };
-export default { create,findNote, findAll, remove, update, findTrash, trash };
+export default { create,findNote, findAll, remove, update, findTrash, trash, recover };
