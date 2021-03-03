@@ -19,5 +19,7 @@ app.get('/note', noteController.findAll);
 app.post('/note', noteController.findNote);
 app.post('/notedelete', noteController.remove);
 app.put('/note/:id', noteController.update);
+app.post('/notetrash',noteController.trash);
+app.post('/trashcan',noteController.findTrash);
 
 export { app as Router };
