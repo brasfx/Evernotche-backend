@@ -24,7 +24,7 @@ const findNote = async (req, res) => {
   const userid = req.body.userid;
   logger.info(` id: ${userid}`);
   try {
-    const data = await Model.find({userid: userid});
+    const data = await Model.find({userid: userid, trash: {$ne: 1}});
     res.send(data);
     logger.info(`GET /note`);
   } catch (error) {
