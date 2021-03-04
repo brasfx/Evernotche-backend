@@ -107,12 +107,12 @@ const update = async (req, res) => {
     });
   }
 
-  const { id } = req.body.id;
+  const { id } = req.body;
 
   try {
-    const data = await Model.updateOne({ _id: id });
+    const data = await Model.updateOne({ _id: id }, req.body);
     //res.send({ message: 'Usuario atualizado com sucesso' });
-    res.send(data);
+    res.send(req.body);
 
     logger.info(`PUT /register - ${id} - ${JSON.stringify(req.body)}`);
   } catch (error) {
