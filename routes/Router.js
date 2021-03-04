@@ -9,7 +9,7 @@ app.post('/new-register', registerController.create);
 app.get('/register', registerController.findAll);
 app.post('/login', registerController.findOne);
 app.post('/support', registerController.support);
-app.delete('/register', registerController.remove);
+app.post('/register', registerController.remove);
 app.put('/register', registerController.update);
 app.put('/recover-password', registerController.recoverPassword);
 
@@ -19,8 +19,8 @@ app.get('/note', noteController.findAll);
 app.post('/note', noteController.findNote);
 app.post('/notedelete', noteController.remove);
 app.put('/note/:noteid', noteController.update);
-app.post('/noterecover', noteController.recover)
-app.post('/notetrash',noteController.trash);
-app.post('/trashcan',noteController.findTrash);
+app.post('/noterecover', noteController.recover);
+app.post('/notetrash', noteController.trash);
+app.post('/trashcan', noteController.findTrash);
 
 export { app as Router };

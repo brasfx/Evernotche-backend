@@ -107,10 +107,10 @@ const update = async (req, res) => {
     });
   }
 
-  const { id } = req.body;
+  const { id } = req.body.id;
 
   try {
-    const data = await Model.updateOne({ _id: id }, req.body);
+    const data = await Model.updateOne({ _id: id });
     //res.send({ message: 'Usuario atualizado com sucesso' });
     res.send(data);
 
