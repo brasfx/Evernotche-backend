@@ -107,11 +107,12 @@ const update = async (req, res) => {
     });
   }
 
-  const id = req.body;
+  const { id } = req.body;
 
   try {
     const data = await Model.updateOne({ _id: id }, req.body);
-    res.send({ message: 'Usuario atualizado com sucesso' });
+    //res.send({ message: 'Usuario atualizado com sucesso' });
+    res.send(data);
 
     logger.info(`PUT /register - ${id} - ${JSON.stringify(req.body)}`);
   } catch (error) {
@@ -123,10 +124,10 @@ const update = async (req, res) => {
 };
 //usuário é removido a partir de seu ID
 const remove = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.body;
 
   try {
-    const data = await Model.deleteOne({ _id: id });
+    const data = await Model.deleteOne({ _id: id }, req.body);
     res.send({ message: 'Usuario excluido com sucesso' });
 
     logger.info(`DELETE / register - ${id}`);
