@@ -123,7 +123,7 @@ const update = async (req, res) => {
 };
 //usuário é removido a partir de seu ID
 const remove = async (req, res) => {
-  const id = req.body;
+  const id = req.body.id;
 
   try {
     const data = await Model.deleteOne({ _id: id });
