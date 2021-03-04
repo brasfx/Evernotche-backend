@@ -18,7 +18,7 @@ app.post('/new-note', noteController.create);
 app.get('/note', noteController.findAll);
 app.post('/note', noteController.findNote);
 app.post('/notedelete', noteController.remove);
-app.put('/note/:id', noteController.update);
+app.put('/note/:noteid', noteController.update);
 app.post('/noterecover', noteController.recover)
 app.post('/notetrash',noteController.trash);
 app.post('/trashcan',noteController.findTrash);
