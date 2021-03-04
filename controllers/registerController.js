@@ -123,11 +123,11 @@ const update = async (req, res) => {
 };
 //usuário é removido a partir de seu ID
 const remove = async (req, res) => {
-  const { id } = req.body;
+  const id = req.params.id;
 
   try {
-    const data = await Model.deleteOne({ _id: id }, req.body);
-    res.send(data, { message: 'Usuario excluido com sucesso' });
+    const data = await Model.deleteOne({ _id: id });
+    res.send({ message: 'Usuario excluido com sucesso' });
 
     logger.info(`DELETE / register - ${id}`);
   } catch (error) {
