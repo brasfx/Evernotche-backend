@@ -127,8 +127,9 @@ const remove = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const data = await Model.deleteOne({ _id: id }, req.body);
-    res.send({ message: 'Usuario excluido com sucesso' });
+    const data = await Model.deleteOne({ _id: id });
+    //res.send({ message: 'Usuario excluido com sucesso' });
+    res.send(data);
 
     logger.info(`DELETE / register - ${id}`);
   } catch (error) {
