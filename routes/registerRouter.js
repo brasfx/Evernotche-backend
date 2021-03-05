@@ -7,7 +7,7 @@ app.post('/new-register', controller.create);
 app.get('/register', controller.findAll);
 app.post('/login', controller.findOne);
 app.post('/support', controller.support);
-app.delete('/register', controller.remove);
+app.delete('/register/:id', controller.remove);
 app.put('/register', controller.update);
 
 export { app as registerRouter };
