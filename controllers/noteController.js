@@ -35,6 +35,23 @@ const findNote = async (req, res) => {
   }
 };
 
+const findSingleNote = async (req, res) => {
+
+  const userid = req.body.userid;
+  const noteid = req.body.noteid;
+
+  try {
+    const data = await Model.find({_id: noteid, userid: userid});
+    res.send(data);
+    logger.info(`GET /note`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /note - ${JSON.stringify(error.message)}`);
+  }
+};
+
 const findTrash = async (req, res) => {
   logger.info(` body: ${req.body}`);
 
@@ -142,4 +159,4 @@ const remove = async (req, res) => {
     logger.error(`DELETE / note - ${JSON.stringify(error.message)}`);
   }
 };
-export default { create,findNote, findAll, remove, update, findTrash, trash, recover };
+export default { create,findNote, findAll, remove, update, findTrash, trash, recover, findSingleNote };

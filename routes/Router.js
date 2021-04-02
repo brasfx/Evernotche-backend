@@ -22,5 +22,6 @@ app.put('/note/:noteid', noteController.update);
 app.post('/noterecover', noteController.recover);
 app.post('/notetrash', noteController.trash);
 app.post('/trashcan', noteController.findTrash);
+app.post('/noteedit', noteController.findSingleNote);
 
 export { app as Router };
