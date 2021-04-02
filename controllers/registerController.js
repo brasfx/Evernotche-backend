@@ -223,6 +223,8 @@ const recoverPassword = async (req, res) => {
         pass: `${process.env.EMAIL_PASSWORD}`,
         port: 587,
         secure: true,
+        api_key:
+          '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',
       },
       tls: {
         rejectUnauthorized: false,
