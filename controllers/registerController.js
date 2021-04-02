@@ -29,20 +29,23 @@ const create = async (req, res) => {
     </ul>
     `;
 
-    let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+    let transporter = nodemailer.createTransport(
+      sendgrid({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
 
-      auth: {
-        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-        pass: `${process.env.EMAIL_PASSWORD}`,
-        port: 587,
-        secure: true,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+        auth: {
+          user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+          pass: `${process.env.EMAIL_PASSWORD}`,
+          port: 587,
+          secure: true,
+          api_key: `${process.env.SENDGRID_API_KEY}`,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      })
+    );
 
     let mailOptions = {
       from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
@@ -158,20 +161,23 @@ const support = async (req, res) => {
     </ul>
     `;
 
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
+  let transporter = nodemailer.createTransport(
+    sendgrid({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
 
-    auth: {
-      user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-      pass: `${process.env.EMAIL_PASSWORD}`,
-      port: 587,
-      secure: true,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+      auth: {
+        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+        pass: `${process.env.EMAIL_PASSWORD}`,
+        port: 587,
+        secure: true,
+        api_key: `${process.env.SENDGRID_API_KEY}`,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    })
+  );
 
   let mailOptions = {
     from: `Suporte <${process.env.EMAIL_LOGIN}>`,
