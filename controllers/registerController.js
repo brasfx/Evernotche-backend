@@ -29,23 +29,20 @@ const create = async (req, res) => {
     </ul>
     `;
 
-    let transporter = nodemailer.createTransport(
-      sendgrid({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
 
-        auth: {
-          user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-          pass: `${process.env.EMAIL_PASSWORD}`,
-          port: 587,
-          secure: true,
-          api_key: `${process.env.SENDGRID_API_KEY}`,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-      })
-    );
+      auth: {
+        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+        pass: `${process.env.EMAIL_PASSWORD}`,
+        port: 587,
+        secure: true,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
 
     let mailOptions = {
       from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
@@ -56,11 +53,11 @@ const create = async (req, res) => {
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return res.send(error);
+        return res.render(error);
       }
-      // res.render('Message sent: %s', info.messageId);
-      // res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      // res.render('contact', { message: 'Email enviado com sucesso!' });
+      res.render('Message sent: %s', info.messageId);
+      res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      res.render('contact', { message: 'Email enviado com sucesso!' });
     });
   } catch (error) {
     res
@@ -161,23 +158,20 @@ const support = async (req, res) => {
     </ul>
     `;
 
-  let transporter = nodemailer.createTransport(
-    sendgrid({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
 
-      auth: {
-        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-        pass: `${process.env.EMAIL_PASSWORD}`,
-        port: 587,
-        secure: true,
-        api_key: `${process.env.SENDGRID_API_KEY}`,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    })
-  );
+    auth: {
+      user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+      pass: `${process.env.EMAIL_PASSWORD}`,
+      port: 587,
+      secure: true,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
 
   let mailOptions = {
     from: `Suporte <${process.env.EMAIL_LOGIN}>`,
@@ -190,9 +184,9 @@ const support = async (req, res) => {
     if (error) {
       return console.log(error);
     }
-    // console.log('Message sent: %s', info.messageId);
-    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    // res.render('support', { message: 'Email de suporte enviado com sucesso!' });
+    console.log('Message sent: %s', info.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    res.render('support', { message: 'Email de suporte enviado com sucesso!' });
   });
 };
 
@@ -252,11 +246,11 @@ const recoverPassword = async (req, res) => {
       }
       console.log('Message sent: %s', info.messageId);
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.send({ message: 'Email enviado com sucesso!' });
+      res.render('contact', { message: 'Email enviado com sucesso!' });
     });
   } catch (error) {
     res.status(500).send({
-      message: error.message || 'Erro ao enviar mensagem',
+      message: error.message || 'Erro ao atualizar o usuario de id: ' + id,
     });
     logger.error(`PUT /register - ${JSON.stringify(error.message)}`);
   }
