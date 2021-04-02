@@ -256,7 +256,7 @@ const recoverPassword = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      message: error.message || 'Erro ao atualizar o usuario de id: ' + id,
+      message: error.message || 'Erro ao enviar mensagem',
     });
     logger.error(`PUT /register - ${JSON.stringify(error.message)}`);
   }
