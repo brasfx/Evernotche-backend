@@ -190,9 +190,9 @@ const support = async (req, res) => {
     if (error) {
       return console.log(error);
     }
-    console.log('Message sent: %s', info.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    res.render('support', { message: 'Email de suporte enviado com sucesso!' });
+    // console.log('Message sent: %s', info.messageId);
+    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    // res.render('support', { message: 'Email de suporte enviado com sucesso!' });
   });
 };
 
@@ -250,9 +250,9 @@ const recoverPassword = async (req, res) => {
       if (error) {
         return console.log(error);
       }
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.send('contact', { message: 'Email enviado com sucesso!' });
+      // console.log('Message sent: %s', info.messageId);
+      // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      // res.send('contact', { message: 'Email enviado com sucesso!' });
     });
   } catch (error) {
     res.status(500).send({
