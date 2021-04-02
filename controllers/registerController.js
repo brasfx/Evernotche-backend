@@ -4,8 +4,6 @@ import { logger } from '../config/logger.js';
 import pkg from 'winston';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import sendgrid from 'nodemailer-sendgrid-transport';
-import sgMail from '@sendgrid/mail';
 
 dotenv.config();
 const { error } = pkg;
@@ -215,56 +213,37 @@ const recoverPassword = async (req, res) => {
     <h4>Senha provisória de acesso: ${req.body.password}</h4>
     <p>Caso não tenha solicitado esse serviço, favor entrar em contato conosco pelo email: ${process.env.EMAIL_LOGIN} e informe o problema.</p>
     `;
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-      to: `${email}`, // Change to your recipient
-      from: `${process.env.EMAIL_LOGIN}`, // Change to your verified sender
-      subject: 'Sending with SendGrid is Fun',
-      text: 'and easy to do anywhere, even with Node.js',
+
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+
+      auth: {
+        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+        pass: `${process.env.EMAIL_PASSWORD}`,
+        port: 587,
+        secure: true,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    let mailOptions = {
+      from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
+      to: `${email}`, // list of receivers
+      subject: 'Recuperação de senha ',
+      text: 'Hello world?',
       html: message,
     };
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log('Email sent');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    // let transporter = nodemailer.createTransport(
-    //   sendgrid({
-    //     service: 'gmail',
-    //     host: 'smtp.gmail.com',
-
-    //     auth: {
-    //       user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-    //       pass: `${process.env.EMAIL_PASSWORD}`,
-    //       port: 587,
-    //       secure: true,
-    //       api_key: `${process.env.SENDGRID_API_KEY}`,
-    //     },
-    //     tls: {
-    //       rejectUnauthorized: false,
-    //     },
-    //   })
-    // );
-
-    // let mailOptions = {
-    //   from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
-    //   to: `${email}`, // list of receivers
-    //   subject: 'Recuperação de senha ',
-    //   text: 'Hello world?',
-    //   html: message,
-    // };
-    // transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     return console.log(error);
-    //   }
-    //   console.log('Message sent: %s', info.messageId);
-    //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    //   res.render('contact', { message: 'Email enviado com sucesso!' });
-    // });
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log('Message sent: %s', info.messageId);
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      res.render('contact', { message: 'Email enviado com sucesso!' });
+    });
   } catch (error) {
     res.status(500).send({
       message: error.message || 'Erro ao atualizar o usuario de id: ' + id,
