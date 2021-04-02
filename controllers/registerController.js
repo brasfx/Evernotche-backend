@@ -252,7 +252,7 @@ const recoverPassword = async (req, res) => {
       }
       console.log('Message sent: %s', info.messageId);
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.render('contact', { message: 'Email enviado com sucesso!' });
+      res.send('contact', { message: 'Email enviado com sucesso!' });
     });
   } catch (error) {
     res.status(500).send({
