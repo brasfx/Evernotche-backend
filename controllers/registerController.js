@@ -4,6 +4,7 @@ import { logger } from '../config/logger.js';
 import pkg from 'winston';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import sendgrid from 'nodemailer-sendgrid-transport';
 
 dotenv.config();
 const { error } = pkg;
@@ -214,22 +215,23 @@ const recoverPassword = async (req, res) => {
     <p>Caso não tenha solicitado esse serviço, favor entrar em contato conosco pelo email: ${process.env.EMAIL_LOGIN} e informe o problema.</p>
     `;
 
-    let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+    let transporter = nodemailer.createTransport(
+      sendgrid({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
 
-      auth: {
-        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-        pass: `${process.env.EMAIL_PASSWORD}`,
-        port: 587,
-        secure: true,
-        api_key:
-          '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',
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+        auth: {
+          user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+          pass: `${process.env.EMAIL_PASSWORD}`,
+          port: 587,
+          secure: true,
+          api_key: `${process.env.SENDGRID_API_KEY}`,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      })
+    );
 
     let mailOptions = {
       from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
