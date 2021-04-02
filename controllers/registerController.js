@@ -56,11 +56,11 @@ const create = async (req, res) => {
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return res.render(error);
+        return res.send(error);
       }
-      res.render('Message sent: %s', info.messageId);
-      res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.render('contact', { message: 'Email enviado com sucesso!' });
+      // res.render('Message sent: %s', info.messageId);
+      // res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      // res.render('contact', { message: 'Email enviado com sucesso!' });
     });
   } catch (error) {
     res
