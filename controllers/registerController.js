@@ -2,7 +2,7 @@ import { db } from '../models/index.js';
 import { logger } from '../config/logger.js';
 //import { error } from 'winston';
 import pkg from 'winston';
-import nodemailer from 'nodemailer';
+//import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import sgMail from '@sendgrid/mail';
 
@@ -28,37 +28,6 @@ const create = async (req, res) => {
       <li>Senha: ${password}</li>
     </ul>
     `;
-
-    // let transporter = nodemailer.createTransport({
-    //   service: 'gmail',
-    //   host: 'smtp.gmail.com',
-
-    //   auth: {
-    //     user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-    //     pass: `${process.env.EMAIL_PASSWORD}`,
-    //     port: 587,
-    //     secure: true,
-    //   },
-    //   tls: {
-    //     rejectUnauthorized: false,
-    //   },
-    // });
-
-    // let mailOptions = {
-    //   from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
-    //   to: `${email}`, // list of receivers
-    //   subject: 'Confirmação criação de conta ',
-    //   text: 'Hello world?',
-    //   html: message,
-    // };
-    // transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     return res.render(error);
-    //   }
-    //   res.render('Message sent: %s', info.messageId);
-    //   res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    //   res.render('contact', { message: 'Email enviado com sucesso!' });
-    // });
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
@@ -177,10 +146,10 @@ const support = async (req, res) => {
   `;
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
-      to: `${process.env.EMAIL_LOGIN}`, // Change to your recipient
-      from: `${process.env.EMAIL_LOGIN}`, // Change to your verified sender
-      subject: 'Recuperação de senha',
-      text: 'Recuperação de senha',
+      to: `${process.env.EMAIL_LOGIN}`,
+      from: `${process.env.EMAIL_LOGIN}`,
+      subject: 'Solicitação de suporte',
+      text: 'Solicitação de suporte',
       html: message,
     };
     sgMail
@@ -197,37 +166,6 @@ const support = async (req, res) => {
     });
     logger.error(`SUPPORT /send-email - ${JSON.stringify(error.message)}`);
   }
-
-  // let transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   host: 'smtp.gmail.com',
-
-  //   auth: {
-  //     user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-  //     pass: `${process.env.EMAIL_PASSWORD}`,
-  //     port: 587,
-  //     secure: true,
-  //   },
-  //   tls: {
-  //     rejectUnauthorized: false,
-  //   },
-  // });
-
-  // let mailOptions = {
-  //   from: `Suporte <${process.env.EMAIL_LOGIN}>`,
-  //   to: `${process.env.EMAIL_LOGIN}`, // list of receivers
-  //   subject: 'Pedido de suporte',
-  //   text: 'Suporte ao usuário',
-  //   html: message,
-  // };
-  // transporter.sendMail(mailOptions, (error, info) => {
-  //   if (error) {
-  //     return console.log(error);
-  //   }
-  //   console.log('Message sent: %s', info.messageId);
-  //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-  //   res.render('support', { message: 'Email de suporte enviado com sucesso!' });
-  // });
 };
 
 //recuperar senha
@@ -254,37 +192,6 @@ const recoverPassword = async (req, res) => {
     <h4>Senha provisória de acesso: ${req.body.password}</h4>
     <p>Caso não tenha solicitado esse serviço, favor entrar em contato conosco pelo email: ${process.env.EMAIL_LOGIN} e informe o problema.</p>
     `;
-
-    // let transporter = nodemailer.createTransport({
-    //   service: 'gmail',
-    //   host: 'smtp.gmail.com',
-
-    //   auth: {
-    //     user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-    //     pass: `${process.env.EMAIL_PASSWORD}`,
-    //     port: 587,
-    //     secure: true,
-    //   },
-    //   tls: {
-    //     rejectUnauthorized: false,
-    //   },
-    // });
-
-    // let mailOptions = {
-    //   from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
-    //   to: `${email}`, // list of receivers
-    //   subject: 'Recuperação de senha ',
-    //   text: 'Hello world?',
-    //   html: message,
-    // };
-    // transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     return console.log(error);
-    //   }
-    //   console.log('Message sent: %s', info.messageId);
-    //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    //   res.render('contact', { message: 'Email enviado com sucesso!' });
-    // });
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
