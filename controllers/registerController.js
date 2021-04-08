@@ -160,51 +160,74 @@ const remove = async (req, res) => {
 };
 
 const support = async (req, res) => {
-  const { name, email, topic, textTopic, file } = req.body;
+  try {
+    const { name, email, topic, textTopic } = req.body;
 
-  let message = `
-    <p>Solicitação de suporte do cliente</p>
-    <p>Favor verificar e fornecer um retorno o mais rápido possivel!</p>
+    let message = `
+  <p>Solicitação de suporte do cliente</p>
+  <p>Favor verificar e fornecer um retorno o mais rápido possivel!</p>
 
-    <h4>Dados para suporte</h4>
-    <ul>
-      <li><b>Nome do usuário:</b> ${name}</li>
-      <li><b>Email do usuário:</b> ${email}</li>
-      <li><b>Assunto:</b> ${topic}</li>
-      <li><b>Mensagem:</b> ${textTopic}</li>
-    </ul>
-    `;
+  <h4>Dados para suporte</h4>
+  <ul>
+    <li><b>Nome do usuário:</b> ${name}</li>
+    <li><b>Email do usuário:</b> ${email}</li>
+    <li><b>Assunto:</b> ${topic}</li>
+    <li><b>Mensagem:</b> ${textTopic}</li>
+  </ul>
+  `;
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: `${process.env.EMAIL_LOGIN}`, // Change to your recipient
+      from: `${process.env.EMAIL_LOGIN}`, // Change to your verified sender
+      subject: 'Recuperação de senha',
+      text: 'Recuperação de senha',
+      html: message,
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email enviado');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Erro ao enviar email de suporte! ',
+    });
+    logger.error(`SUPPORT /send-email - ${JSON.stringify(error.message)}`);
+  }
 
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
+  // let transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   host: 'smtp.gmail.com',
 
-    auth: {
-      user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-      pass: `${process.env.EMAIL_PASSWORD}`,
-      port: 587,
-      secure: true,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+  //   auth: {
+  //     user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+  //     pass: `${process.env.EMAIL_PASSWORD}`,
+  //     port: 587,
+  //     secure: true,
+  //   },
+  //   tls: {
+  //     rejectUnauthorized: false,
+  //   },
+  // });
 
-  let mailOptions = {
-    from: `Suporte <${process.env.EMAIL_LOGIN}>`,
-    to: `${process.env.EMAIL_LOGIN}`, // list of receivers
-    subject: 'Pedido de suporte',
-    text: 'Suporte ao usuário',
-    html: message,
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error);
-    }
-    console.log('Message sent: %s', info.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    res.render('support', { message: 'Email de suporte enviado com sucesso!' });
-  });
+  // let mailOptions = {
+  //   from: `Suporte <${process.env.EMAIL_LOGIN}>`,
+  //   to: `${process.env.EMAIL_LOGIN}`, // list of receivers
+  //   subject: 'Pedido de suporte',
+  //   text: 'Suporte ao usuário',
+  //   html: message,
+  // };
+  // transporter.sendMail(mailOptions, (error, info) => {
+  //   if (error) {
+  //     return console.log(error);
+  //   }
+  //   console.log('Message sent: %s', info.messageId);
+  //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  //   res.render('support', { message: 'Email de suporte enviado com sucesso!' });
+  // });
 };
 
 //recuperar senha
@@ -281,9 +304,9 @@ const recoverPassword = async (req, res) => {
       });
   } catch (error) {
     res.status(500).send({
-      message: error.message || 'Erro ao atualizar o usuario de id: ' + id,
+      message: error.message || 'Erro ao recuperar senha',
     });
-    logger.error(`PUT /register - ${JSON.stringify(error.message)}`);
+    logger.error(`PUT /recover-password - ${JSON.stringify(error.message)}`);
   }
 };
 
