@@ -4,6 +4,7 @@ import { logger } from '../config/logger.js';
 import pkg from 'winston';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import sgMail from '@sendgrid/mail';
 
 dotenv.config();
 const { error } = pkg;
@@ -28,36 +29,53 @@ const create = async (req, res) => {
     </ul>
     `;
 
-    let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+    // let transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+    //   host: 'smtp.gmail.com',
 
-      auth: {
-        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-        pass: `${process.env.EMAIL_PASSWORD}`,
-        port: 587,
-        secure: true,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+    //   auth: {
+    //     user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+    //     pass: `${process.env.EMAIL_PASSWORD}`,
+    //     port: 587,
+    //     secure: true,
+    //   },
+    //   tls: {
+    //     rejectUnauthorized: false,
+    //   },
+    // });
 
-    let mailOptions = {
-      from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
-      to: `${email}`, // list of receivers
-      subject: 'Confirmação criação de conta ',
-      text: 'Hello world?',
+    // let mailOptions = {
+    //   from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
+    //   to: `${email}`, // list of receivers
+    //   subject: 'Confirmação criação de conta ',
+    //   text: 'Hello world?',
+    //   html: message,
+    // };
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     return res.render(error);
+    //   }
+    //   res.render('Message sent: %s', info.messageId);
+    //   res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    //   res.render('contact', { message: 'Email enviado com sucesso!' });
+    // });
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: `${email}`, // Change to your recipient
+      from: `${process.env.EMAIL_LOGIN}`, // Change to your verified sender
+      subject: 'Confirmação criação de conta',
+      text: 'Seja bem vindo!',
       html: message,
     };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.render(error);
-      }
-      res.render('Message sent: %s', info.messageId);
-      res.render('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.render('contact', { message: 'Email enviado com sucesso!' });
-    });
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email enviado');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   } catch (error) {
     res
       .status(500)
