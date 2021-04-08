@@ -232,36 +232,53 @@ const recoverPassword = async (req, res) => {
     <p>Caso não tenha solicitado esse serviço, favor entrar em contato conosco pelo email: ${process.env.EMAIL_LOGIN} e informe o problema.</p>
     `;
 
-    let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+    // let transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+    //   host: 'smtp.gmail.com',
 
-      auth: {
-        user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
-        pass: `${process.env.EMAIL_PASSWORD}`,
-        port: 587,
-        secure: true,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+    //   auth: {
+    //     user: `${process.env.EMAIL_LOGIN}`, // generated ethereal user
+    //     pass: `${process.env.EMAIL_PASSWORD}`,
+    //     port: 587,
+    //     secure: true,
+    //   },
+    //   tls: {
+    //     rejectUnauthorized: false,
+    //   },
+    // });
 
-    let mailOptions = {
-      from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
-      to: `${email}`, // list of receivers
-      subject: 'Recuperação de senha ',
-      text: 'Hello world?',
+    // let mailOptions = {
+    //   from: `Evernotche Web <${process.env.EMAIL_LOGIN}>`,
+    //   to: `${email}`, // list of receivers
+    //   subject: 'Recuperação de senha ',
+    //   text: 'Hello world?',
+    //   html: message,
+    // };
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     return console.log(error);
+    //   }
+    //   console.log('Message sent: %s', info.messageId);
+    //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    //   res.render('contact', { message: 'Email enviado com sucesso!' });
+    // });
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: `${email}`, // Change to your recipient
+      from: `${process.env.EMAIL_LOGIN}`, // Change to your verified sender
+      subject: 'Recuperação de senha',
+      text: 'Recuperação de senha',
       html: message,
     };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return console.log(error);
-      }
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.render('contact', { message: 'Email enviado com sucesso!' });
-    });
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email enviado');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   } catch (error) {
     res.status(500).send({
       message: error.message || 'Erro ao atualizar o usuario de id: ' + id,
