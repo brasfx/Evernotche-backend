@@ -39,6 +39,10 @@ const noteSchema = new Schema({
       type: String,
       required: false, //TODO
     },
+    trash: {
+      type: Number,
+      required: false,
+    },
   });
   const noteModel =  mongoose.model('note', noteSchema, 'note');
   

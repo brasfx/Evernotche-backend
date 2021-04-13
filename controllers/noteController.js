@@ -60,7 +60,7 @@ const findTrash = async (req, res) => {
   try {
     const data = await Model.find({userid: userid, trash: 1 });
     res.send(data);
-    logger.info(`GET /note`);
+    logger.info(`GET /note lixo`);
   } catch (error) {
     res
       .status(500)
@@ -87,24 +87,24 @@ const findAll = async (_, res) => {
 //Nota é atualiada a partir de seu ID  para o lixo
 const trash = async (req, res) => {
 
-  const noteid = req.params.noteid;
+  const noteid = req.body.noteid;
 
   try {
     const data = await Model.updateOne({ _id: noteid }, {$set: { trash: 1}});
     res.send({ message: 'Nota Enviada para o Lixo' });
 
-    logger.info(`PUT /note - ${noteid} - ${JSON.stringify(req.body)}`);
+    logger.info(`PUT /note para o lixo - ${noteid} - ${JSON.stringify(req.body)}`);
   } catch (error) {
     res.status(500).send({
       message: error.message || 'Erro ao enviar para o lixo a nota de id: ' + noteid,
     });
-    logger.error(`PUT /note - ${JSON.stringify(error.message)}`);
+    logger.error(`PUT /note erro lixeira - ${JSON.stringify(error.message)}`);
   }
 };
 
 const recover = async (req, res) => {
 
-  const noteid = req.params.noteid;
+  const noteid = req.body.noteid;
 
   try {
     const data = await Model.updateOne({ _id: noteid }, {$set: { trash: 0}});
@@ -144,7 +144,7 @@ const update = async (req, res) => {
 
 //Nota é removida a partir de seu ID
 const remove = async (req, res) => {
-  const noteid = req.body.id;
+  const noteid = req.body.noteid;
 
   try {
     const data = await Model.deleteOne({ _id: noteid });
