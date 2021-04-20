@@ -1,7 +1,9 @@
 import { db } from '../models/index.js';
 import { logger } from '../config/logger.js';
+import registerController from './registerController.js';
 
 const Model = db.notes;
+const Jerry = db.register;
 const create = async (req, res) => {
   const { title, payload, userid, timestamp } = req.body;
 
@@ -159,4 +161,38 @@ const remove = async (req, res) => {
     logger.error(`DELETE / note - ${JSON.stringify(error.message)}`);
   }
 };
-export default { create,findNote, findAll, remove, update, findTrash, trash, recover, findSingleNote };
+
+const share = async (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: 'Dados para atualizacao vazio',
+    });
+  }
+  const email = req.body.email;
+
+  try {
+    const data = await Model.findOne(
+      { email: email }, _id
+    );
+
+    logger.info(`GET /login - ${email} - ${JSON.stringify(req.body)}`);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Email cadastrado: ' + email,
+    });
+    logger.error(`GET /login - ${JSON.stringify(error.message)}`);
+  }
+
+  try {
+    const data = await Model.updateOne({ _id: noteid }, {$push: {userid: data}});
+    res.send({ message: 'Nota compartilhada com sucesso' });
+
+    logger.info(`PUT /note - ${noteid} - ${JSON.stringify(req.body)}`);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Erro ao atualizar a nota de id: ' + noteid,
+    });
+    logger.error(`PUT /note - ${JSON.stringify(error.message)}`);
+  }
+};
+export default { create,findNote, findAll, remove, update, findTrash, trash, recover, findSingleNote, share };

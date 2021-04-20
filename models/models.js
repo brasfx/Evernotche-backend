@@ -32,7 +32,7 @@ const noteSchema = new Schema({
       required: true,
     },
     userid: {
-      type: String,
+      type: Array,
       required: false, //TODO
     },
     timestamp: {

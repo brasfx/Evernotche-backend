@@ -23,5 +23,6 @@ app.post('/noterecover', noteController.recover);
 app.post('/notetrash', noteController.trash);
 app.post('/trashcan', noteController.findTrash);
 app.post('/noteedit', noteController.findSingleNote);
+app.post('/share', noteController.share);
 
 export { app as Router };
