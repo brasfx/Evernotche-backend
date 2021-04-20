@@ -169,25 +169,18 @@ const share = async (req, res) => {
     });
   }
   const email = req.body.email;
+  const noteid = req.body.id;
 
   try {
-    const data = await Model.findOne(
-      { email: email }, _id
+    const emailuser = await Jerry.findOne(
+      { email: email }, "_id"
     );
+    
 
-    logger.info(`GET /login - ${email} - ${JSON.stringify(req.body)}`);
-  } catch (error) {
-    res.status(500).send({
-      message: error.message || 'Email cadastrado: ' + email,
-    });
-    logger.error(`GET /login - ${JSON.stringify(error.message)}`);
-  }
-
-  try {
-    const data = await Model.updateOne({ _id: noteid }, {$push: {userid: data}});
+    const data = await Model.updateOne({ _id: noteid }, {$push: {userid: emailuser._id.toString()}});
     res.send({ message: 'Nota compartilhada com sucesso' });
 
-    logger.info(`PUT /note - ${noteid} - ${JSON.stringify(req.body)}`);
+    logger.info(`PUT /note - ${noteid} - ${emailuser._id.toString()} - ${JSON.stringify(req.body)}`);
   } catch (error) {
     res.status(500).send({
       message: error.message || 'Erro ao atualizar a nota de id: ' + noteid,
