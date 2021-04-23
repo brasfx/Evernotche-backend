@@ -24,5 +24,9 @@ app.post('/notetrash', noteController.trash);
 app.post('/trashcan', noteController.findTrash);
 app.post('/noteedit', noteController.findSingleNote);
 app.post('/share', noteController.share);
+app.post('/finished', noteController.findFinishedNote);
+app.post('/markfinished', noteController.markFinished);
+app.post('/unmarkfinished', noteController.unmarkFinished);
+
 
 export { app as Router };

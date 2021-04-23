@@ -43,6 +43,14 @@ const noteSchema = new Schema({
       type: Number,
       required: false,
     },
+    cor: {
+      type: String,
+      required: false,
+    },
+    finished: {
+      type: Number,
+      required: false,
+    },
   });
   const noteModel =  mongoose.model('note', noteSchema, 'note');
   

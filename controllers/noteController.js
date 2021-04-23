@@ -26,7 +26,7 @@ const findNote = async (req, res) => {
   const userid = req.body.userid;
   logger.info(` id: ${userid}`);
   try {
-    const data = await Model.find({userid: userid, trash: {$ne: 1}});
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}});
     res.send(data);
     logger.info(`GET /note`);
   } catch (error) {
@@ -36,6 +36,60 @@ const findNote = async (req, res) => {
     logger.error(`GET /note - ${JSON.stringify(error.message)}`);
   }
 };
+//concluidas
+const findFinishedNote = async (req, res) => {
+  logger.info(` body: ${req.body}`);
+
+  const userid = req.body.userid;
+  logger.info(` id: ${userid}`);
+  try {
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: 1});
+    res.send(data);
+    logger.info(`GET /note`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /note - ${JSON.stringify(error.message)}`);
+  }
+};
+
+//marca como concluida
+const markFinished = async (req, res) => {
+
+  const noteid = req.body.noteid;
+
+  try {
+    const data = await Model.updateOne({ _id: noteid }, {$set: { finished: 1}});
+    res.send({ message: 'Nota Enviada para o Lixo' });
+
+    logger.info(`PUT /note para o lixo - ${noteid} - ${JSON.stringify(req.body)}`);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Erro ao enviar para o lixo a nota de id: ' + noteid,
+    });
+    logger.error(`PUT /note erro lixeira - ${JSON.stringify(error.message)}`);
+  }
+};
+
+//desmarca como concluida
+const unmarkFinished = async (req, res) => {
+
+  const noteid = req.body.noteid;
+
+  try {
+    const data = await Model.updateOne({ _id: noteid }, {$set: { finished: 0}});
+    res.send({ message: 'Nota Enviada para o Lixo' });
+
+    logger.info(`PUT /note para o lixo - ${noteid} - ${JSON.stringify(req.body)}`);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Erro ao enviar para o lixo a nota de id: ' + noteid,
+    });
+    logger.error(`PUT /note erro lixeira - ${JSON.stringify(error.message)}`);
+  }
+};
+
 
 const findSingleNote = async (req, res) => {
 
@@ -188,4 +242,4 @@ const share = async (req, res) => {
     logger.error(`PUT /note - ${JSON.stringify(error.message)}`);
   }
 };
-export default { create,findNote, findAll, remove, update, findTrash, trash, recover, findSingleNote, share };
+export default { create,findNote, findAll, remove, update, findTrash, trash, recover, findSingleNote, share, findFinishedNote, markFinished, unmarkFinished };
