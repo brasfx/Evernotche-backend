@@ -8,7 +8,7 @@ const create = async (req, res) => {
   const { title, payload, userid, timestamp, color } = req.body;
 
   try {
-    const note = new Model({ title, payload, userid, timestamp });
+    const note = new Model({ title, payload, userid, timestamp, color });
     const data = await note.save(note);
     res.send(note);
     logger.info(`POST /note - ${JSON.stringify(note)}`);
