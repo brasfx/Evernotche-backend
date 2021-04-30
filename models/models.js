@@ -43,7 +43,7 @@ const noteSchema = new Schema({
       type: Number,
       required: false,
     },
-    cor: {
+    color: {
       type: String,
       required: false,
     },
