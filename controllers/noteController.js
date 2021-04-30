@@ -5,7 +5,7 @@ import registerController from './registerController.js';
 const Model = db.notes;
 const Jerry = db.register;
 const create = async (req, res) => {
-  const { title, payload, userid, timestamp } = req.body;
+  const { title, payload, userid, timestamp, color } = req.body;
 
   try {
     const note = new Model({ title, payload, userid, timestamp });
