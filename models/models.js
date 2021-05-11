@@ -35,9 +35,10 @@ const noteSchema = new Schema({
       type: Array,
       required: false, //TODO
     },
-    timestamp: {
-      type: String,
-      required: false, //TODO
+    date: {
+      type: Date,
+      required: false,
+      default: Date.now //TODO
     },
     trash: {
       type: Number,

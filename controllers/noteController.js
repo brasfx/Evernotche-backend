@@ -20,13 +20,13 @@ const create = async (req, res) => {
   }
 };
 // Puxa Nota Pelo ID do usuário
-const findNote = async (req, res) => {
+const findNoteDateAscendingLimited = async (req, res) => {
   logger.info(` body: ${req.body}`);
 
   const userid = req.body.userid;
   logger.info(` id: ${userid}`);
   try {
-    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}});
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({date: 1}).limit(3);
     res.send(data);
     logger.info(`GET /note`);
   } catch (error) {
@@ -36,6 +36,71 @@ const findNote = async (req, res) => {
     logger.error(`GET /note - ${JSON.stringify(error.message)}`);
   }
 };
+const findNoteDateDescending = async (req, res) => {
+  logger.info(` body: ${req.body}`);
+
+  const userid = req.body.userid;
+  logger.info(` id: ${userid}`);
+  try {
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({date: -1});
+    res.send(data);
+    logger.info(`GET /note`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /note - ${JSON.stringify(error.message)}`);
+  }
+};
+const findNoteDateAscending = async (req, res) => {
+  logger.info(` body: ${req.body}`);
+
+  const userid = req.body.userid;
+  logger.info(` id: ${userid}`);
+  try {
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({date: 1});
+    res.send(data);
+    logger.info(`GET /note`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /note - ${JSON.stringify(error.message)}`);
+  }
+};
+const findNoteTitleAscending = async (req, res) => {
+  logger.info(` body: ${req.body}`);
+
+  const userid = req.body.userid;
+  logger.info(` id: ${userid}`);
+  try {
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({title: 1});
+    res.send(data);
+    logger.info(`GET /note`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /note - ${JSON.stringify(error.message)}`);
+  }
+};
+const findNoteTitleDescending = async (req, res) => {
+  logger.info(` body: ${req.body}`);
+
+  const userid = req.body.userid;
+  logger.info(` id: ${userid}`);
+  try {
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({title: -1});
+    res.send(data);
+    logger.info(`GET /note`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /note - ${JSON.stringify(error.message)}`);
+  }
+};
+
 //concluidas
 const findFinishedNote = async (req, res) => {
   logger.info(` body: ${req.body}`);
@@ -242,4 +307,22 @@ const share = async (req, res) => {
     logger.error(`PUT /note - ${JSON.stringify(error.message)}`);
   }
 };
-export default { create,findNote, findAll, remove, update, findTrash, trash, recover, findSingleNote, share, findFinishedNote, markFinished, unmarkFinished };
+export default { 
+  create, 
+  findAll, 
+  remove, 
+  update, 
+  findTrash, 
+  trash, 
+  recover, 
+  findSingleNote, 
+  share, 
+  findFinishedNote, 
+  markFinished, 
+  unmarkFinished, 
+  findNoteDateAscendingLimited, 
+  findNoteDateDescending, 
+  findNoteDateAscending, 
+  findNoteTitleDescending, 
+  findNoteTitleAscending,  
+};
