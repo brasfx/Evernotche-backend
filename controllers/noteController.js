@@ -26,7 +26,7 @@ const findNoteDateAscendingLimited = async (req, res) => {
   const userid = req.body.userid;
   logger.info(` id: ${userid}`);
   try {
-    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({date: 1}).limit(3);
+    const data = await Model.find({userid: userid, trash: {$ne: 1}, finished: {$ne:1}}).sort({date: -1}).limit(3);
     res.send(data);
     logger.info(`GET /note`);
   } catch (error) {
