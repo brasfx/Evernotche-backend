@@ -265,10 +265,10 @@ const update = async (req, res) => {
 
 //Nota é removida a partir de seu ID
 const remove = async (req, res) => {
-  const {noteid} = req.body;
+  const noteid = req.body.noteid;
 
   try {
-    const data = await Model.deleteMany({ _id: {$in: noteid} });
+    const data = await Model.deleteOne({ _id: noteid });
     res.send({ message: 'Nota excluida com sucesso' });
 
     logger.info(`DELETE / note - ${noteid}`);
