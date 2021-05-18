@@ -211,7 +211,7 @@ const trash = async (req, res) => {
   const noteid = req.body.noteid;
 
   try {
-    const data = await Model.updateOne({ _id: noteid }, {$set: { trash: 1}});
+    const data = await Model.update({ _id: noteid }, {$set: { trash: 1}});
     res.send({ message: 'Nota Enviada para o Lixo' });
 
     logger.info(`PUT /note para o lixo - ${noteid} - ${JSON.stringify(req.body)}`);
@@ -268,7 +268,7 @@ const remove = async (req, res) => {
   const noteid = req.body.noteid;
 
   try {
-    const data = await Model.deleteOne({ _id: noteid });
+    const data = await Model.delete({ _id: noteid });
     res.send({ message: 'Nota excluida com sucesso' });
 
     logger.info(`DELETE / note - ${noteid}`);
